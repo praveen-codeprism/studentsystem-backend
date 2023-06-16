@@ -20,6 +20,12 @@ public class StudentController {
         return "New student is added";
     }
 
+    @PostMapping("/add-all")
+    public String addAl(@RequestBody List<Student> students) {
+        students.stream().forEach(student->studentService.saveStudent(student));
+        return "Multiple students are added";
+    }
+
     @GetMapping("/getAll")
     public List<Student> list() {
         return studentService.getAllStudents();
@@ -44,6 +50,8 @@ public class StudentController {
         } else {
             existingStudent.setName(student.getName());
             existingStudent.setAddress(student.getAddress());
+            existingStudent.setNumber(student.getNumber());
+            existingStudent.setGender(student.getGender());
             studentService.saveStudent(existingStudent);
             return "Student with ID " + id + " has been updated.";
         }

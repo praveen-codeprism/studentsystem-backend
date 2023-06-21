@@ -10,7 +10,7 @@ public class Student {
     private String name;
     private String address;
    // @Column(columnDefinition = "INT default 1234567890")
-    private Integer number ;
+    private String number ;
    // @Column(columnDefinition = "varchar(255) default 'male'")
     private String gender ;
 
@@ -41,11 +41,11 @@ public class Student {
         this.address = address;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 

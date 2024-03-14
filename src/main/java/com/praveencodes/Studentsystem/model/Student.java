@@ -12,6 +12,7 @@ public class Student {
     private int id;
     private String name;
     private String address;
+    private String password;
 
     public Student() {
     }
@@ -38,5 +39,17 @@ public class Student {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+
+
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

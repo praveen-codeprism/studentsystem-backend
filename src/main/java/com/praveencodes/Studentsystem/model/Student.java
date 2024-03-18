@@ -13,6 +13,8 @@ public class Student {
     private String number ;
    // @Column(columnDefinition = "varchar(255) default 'male'")
     private String gender ;
+    private  String password ;
+
 
     public Student() {
     }
@@ -56,4 +58,13 @@ public class Student {
     public String getGender() {
         return gender;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
 }

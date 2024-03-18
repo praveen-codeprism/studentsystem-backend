@@ -9,6 +9,7 @@ public class Student {
     private int id;
     private String name;
     private String address;
+
    // @Column(columnDefinition = "INT default 1234567890")
     private String number ;
    // @Column(columnDefinition = "varchar(255) default 'male'")
@@ -66,5 +67,4 @@ public class Student {
     public String getPassword() {
         return password;
     }
-
 }

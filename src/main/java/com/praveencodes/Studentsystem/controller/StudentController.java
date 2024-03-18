@@ -69,6 +69,7 @@ public class StudentController {
             existingStudent.setNumber(student.getNumber());
             existingStudent.setPassword(student.getPassword());
             existingStudent.setGender(student.getGender());
+
             studentService.saveStudent(existingStudent);
             return "Student with ID " + id + " has been updated.";
         }

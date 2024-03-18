@@ -1,4 +1,5 @@
 package com.praveencodes.Studentsystem.service;
+
 import com.praveencodes.Studentsystem.model.Student;
 import com.praveencodes.Studentsystem.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudentById(Long id) {
         return studentRepository.getStudentById(id.intValue());
+    }
+
+    @Override
+    public boolean loginStudent(String name, String password) {
+        Student student = studentRepository.findByname(name);
+        return student != null && student.getPassword().equals(password);
     }
 }

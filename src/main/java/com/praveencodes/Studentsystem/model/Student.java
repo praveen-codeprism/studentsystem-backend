@@ -1,9 +1,6 @@
 package com.praveencodes.Studentsystem.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Student {
@@ -12,7 +9,13 @@ public class Student {
     private int id;
     private String name;
     private String address;
-    private String password;
+
+   // @Column(columnDefinition = "INT default 1234567890")
+    private String number ;
+   // @Column(columnDefinition = "varchar(255) default 'male'")
+    private String gender ;
+    private  String password ;
+
 
     public Student() {
     }
@@ -41,15 +44,27 @@ public class Student {
         this.address = address;
     }
 
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
+    public String getNumber() {
+        return number;
+    }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-
-    public String getPassword() {
-        return password;
+    public String getGender() {
+        return gender;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

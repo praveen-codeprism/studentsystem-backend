@@ -2,6 +2,8 @@ package com.praveencodes.Studentsystem.model;
 
 import jakarta.persistence.*;
 
+import javax.management.relation.Role;
+
 @Entity
 public class Student {
     @Id
@@ -13,6 +15,7 @@ public class Student {
     private String gender;  // New field
     private String password;
     private String email;
+    private Role role;
 
     public Student() {
     }
@@ -71,5 +74,16 @@ public class Student {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    public enum Role {
+
+        ADMIN,
+        STUDENT
     }
 }

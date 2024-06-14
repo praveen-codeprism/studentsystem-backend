@@ -18,33 +18,45 @@ public class StudentController {
     private StudentService studentService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody Student student) {
+    public ResponseEntity<StudentResponse> signup(@RequestBody Student student) {
         if (studentService.existsByEmail(student.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already in use.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new StudentResponse(null, "Email is already in use."));
         }
 
-        // Assuming you have validation logic for password strength, etc.
         if (student.getPassword() == null || student.getPassword().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password cannot be empty.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StudentResponse(null, "Password cannot be empty."));
         }
 
-        // Save student
-        studentService.saveStudent(student);
+        if (student.getRole() == null) {
+            student.setRole(studentService.getDefaultRole());
+        }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Signup successful. Welcome, " + student.getName() + "!");
+        Student savedStudent = studentService.saveStudent(student);
+
+        if (savedStudent == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StudentResponse(null, "Failed to save student."));
+        }
+
+        StudentResponse response = new StudentResponse(savedStudent, "Signup successful. Welcome, " + savedStudent.getName() + "!");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Student student) {
+    public ResponseEntity<StudentResponse> login(@RequestBody Student student) {
         boolean loginSuccessful = studentService.loginStudent(student.getEmail(), student.getPassword());
         if (loginSuccessful) {
-            // Here you can add any additional information you want to include in the response
-            String message = "Login successful. Welcome, " + student.getName() + "!";
-            return ResponseEntity.ok(message);
+            Student loggedInStudent = studentService.findByEmail(student.getEmail());
+            if (loggedInStudent == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StudentResponse(null, "Failed to fetch student details after login."));
+            }
+            String message = "Login successful. Welcome, " + loggedInStudent.getName() + "!";
+            StudentResponse response = new StudentResponse(loggedInStudent, message);
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed. Incorrect email or password.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new StudentResponse(null, "Login failed. Incorrect email or password."));
         }
     }
+
 
     @PostMapping("/add-all")
     public String addAll(@RequestBody List<Student> students) {
@@ -80,9 +92,37 @@ public class StudentController {
             existingStudent.setPassword(student.getPassword());
             existingStudent.setGender(student.getGender());
             existingStudent.setEmail(student.getEmail());
+            existingStudent.setRole(student.getRole());
 
             studentService.saveStudent(existingStudent);
             return "Student with ID " + id + " has been updated.";
+        }
+    }
+
+    // Response DTO class to include student and message
+    public static class StudentResponse {
+        private Student student;
+        private String message;
+
+        public StudentResponse(Student student, String message) {
+            this.student = student;
+            this.message = message;
+        }
+
+        public Student getStudent() {
+            return student;
+        }
+
+        public void setStudent(Student student) {
+            this.student = student;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
         }
     }
 }

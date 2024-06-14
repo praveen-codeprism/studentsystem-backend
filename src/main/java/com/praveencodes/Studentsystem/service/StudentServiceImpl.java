@@ -48,4 +48,8 @@ public class StudentServiceImpl implements StudentService {
     public Student findByEmail(String email) {
         return studentRepository.findByEmail(email);
     }
+    @Override
+    public Student.Role getDefaultRole() {
+        return Student.Role.STUDENT;  // Default role is USER
+    }
 }

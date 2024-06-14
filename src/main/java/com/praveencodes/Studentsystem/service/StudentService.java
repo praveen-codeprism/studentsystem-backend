@@ -18,4 +18,7 @@ public interface StudentService {
     boolean existsByEmail(String email);
 
     Student findByEmail(String email);
+
+    Student.Role getDefaultRole();
 }
+

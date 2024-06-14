@@ -9,13 +9,10 @@ public class Student {
     private int id;
     private String name;
     private String address;
-
-   // @Column(columnDefinition = "INT default 1234567890")
-    private String number ;
-   // @Column(columnDefinition = "varchar(255) default 'male'")
-    private String gender ;
-    private  String password ;
-
+    private String number;  // New field
+    private String gender;  // New field
+    private String password;
+    private String email;
 
     public Student() {
     }
@@ -44,27 +41,35 @@ public class Student {
         this.address = address;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public String getNumber() {
         return number;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -30,12 +30,22 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student getStudentById(Long id) {
-        return studentRepository.getStudentById(id.intValue());
+        return studentRepository.findById(id.intValue()).orElse(null);
     }
 
     @Override
-    public boolean loginStudent(String name, String password) {
-        Student student = studentRepository.findByname(name);
+    public boolean loginStudent(String email, String password) {
+        Student student = studentRepository.findByEmail(email);
         return student != null && student.getPassword().equals(password);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return studentRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Student findByEmail(String email) {
+        return studentRepository.findByEmail(email);
     }
 }

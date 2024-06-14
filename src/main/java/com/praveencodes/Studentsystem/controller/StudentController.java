@@ -17,27 +17,37 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @PostMapping("/add")
-    public String add(@RequestBody Student student) {
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody Student student) {
+        if (studentService.existsByEmail(student.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already in use.");
+        }
+
+        // Assuming you have validation logic for password strength, etc.
+        if (student.getPassword() == null || student.getPassword().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password cannot be empty.");
+        }
+
+        // Save student
         studentService.saveStudent(student);
-        return "New student is added";
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Signup successful. Welcome, " + student.getName() + "!");
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Student student) {
-        boolean loginSuccessful = studentService.loginStudent(student.getName(), student.getPassword());
+        boolean loginSuccessful = studentService.loginStudent(student.getEmail(), student.getPassword());
         if (loginSuccessful) {
             // Here you can add any additional information you want to include in the response
             String message = "Login successful. Welcome, " + student.getName() + "!";
             return ResponseEntity.ok(message);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed. Incorrect username or password.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed. Incorrect email or password.");
         }
-
     }
 
     @PostMapping("/add-all")
-    public String addAl(@RequestBody List<Student> students) {
+    public String addAll(@RequestBody List<Student> students) {
         students.forEach(student -> studentService.saveStudent(student));
         return "Multiple students are added";
     }
@@ -69,6 +79,7 @@ public class StudentController {
             existingStudent.setNumber(student.getNumber());
             existingStudent.setPassword(student.getPassword());
             existingStudent.setGender(student.getGender());
+            existingStudent.setEmail(student.getEmail());
 
             studentService.saveStudent(existingStudent);
             return "Student with ID " + id + " has been updated.";

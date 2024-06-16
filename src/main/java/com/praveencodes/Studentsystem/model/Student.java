@@ -83,7 +83,7 @@ public class Student {
     }
     public enum Role {
 
-        ADMIN,
-        STUDENT
+        ADMIN,//=0
+        STUDENT//=1
     }
 }
